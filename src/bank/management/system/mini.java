@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 
 public class mini extends JFrame implements ActionListener {
     String pin;
@@ -35,9 +34,9 @@ public class mini extends JFrame implements ActionListener {
 
         try{
             Connn c = new Connn();
-            ResultSet resultSet = c.statement.executeQuery("select * from login where pin = '"+pin+"'");
-            while (resultSet.next()){
-                label3.setText("Card Number:  "+ resultSet.getString("card_number").substring(0,4) + "XXXXXXXX"+ resultSet.getString("card_number").substring(12));
+            String card = c.getCardByPin(pin);
+            if (card != null && card.length() >= 16) {
+                label3.setText("Card Number:  "+ card.substring(0,4) + "XXXXXXXX"+ card.substring(12));
             }
         }catch (Exception e ){
             e.printStackTrace();
@@ -46,15 +45,12 @@ public class mini extends JFrame implements ActionListener {
         try{
             int balance =0;
             Connn c = new Connn();
-            ResultSet resultSet = c.statement.executeQuery("select * from bank where pin = '"+pin+"'");
-            while (resultSet.next()){
-
-                label1.setText(label1.getText() + "<html>"+resultSet.getString("date")+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+resultSet.getString("type")+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+resultSet.getString("amount")+ "<br><br><html>");
-
-                if (resultSet.getString("type").equals("Deposit")){
-                    balance += Integer.parseInt(resultSet.getString("amount"));
+            for (Connn.TransactionRecord t : c.getTransactions(pin)) {
+                label1.setText(label1.getText() + "<html>"+t.date()+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+t.type()+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+t.amount()+ "<br><br><html>");
+                if (t.type().equalsIgnoreCase("Deposit")){
+                    balance += Integer.parseInt(t.amount());
                 }else {
-                    balance -= Integer.parseInt(resultSet.getString("amount"));
+                    balance -= Integer.parseInt(t.amount());
                 }
             }
             label4.setText("Your Total Balance is Rs "+balance);

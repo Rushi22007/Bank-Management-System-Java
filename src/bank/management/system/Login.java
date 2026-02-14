@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 
 public class Login extends JFrame implements ActionListener {
     JLabel label1, label2, label3;
@@ -92,7 +91,22 @@ public class Login extends JFrame implements ActionListener {
         setSize(850,480);
         setLocation(450,200);
         setUndecorated(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+
+        String autoCloseAfterSeconds = System.getProperty("autoCloseAfterSeconds");
+        if (autoCloseAfterSeconds != null) {
+            try {
+                int delaySeconds = Integer.parseInt(autoCloseAfterSeconds);
+                Timer timer = new Timer(delaySeconds * 1000, evt -> {
+                    dispose();
+                    System.exit(0);
+                });
+                timer.setRepeats(false);
+                timer.start();
+            } catch (NumberFormatException ignored) {
+            }
+        }
     }
 
     @Override
@@ -102,9 +116,7 @@ public class Login extends JFrame implements ActionListener {
                 Connn c = new Connn();
                 String cardno = textField2.getText();
                 String pin = passwordField3.getText();
-                String q = "select * from login where card_number = '"+cardno+"' and  pin = '"+pin+"'";
-                ResultSet resultSet = c.statement.executeQuery(q);
-                if (resultSet.next()){
+                if (c.validateLogin(cardno, pin)){
                     setVisible(false);
                     new main_Class(pin);
                 }else {

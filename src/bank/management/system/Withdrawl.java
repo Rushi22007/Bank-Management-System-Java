@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 import java.util.Date;
 
 public class Withdrawl extends JFrame implements ActionListener {
@@ -72,21 +71,13 @@ public class Withdrawl extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Please enter the Amount you want to withdraw");
                 } else {
                     Connn c = new Connn();
-                    ResultSet resultSet = c.statement.executeQuery("select * from bank where pin = '" + pin + "'");
-                    int balance = 0;
-                    while (resultSet.next()) {
-                        if (resultSet.getString("type").equals("Deposit")) {
-                            balance += Integer.parseInt(resultSet.getString("amount"));
-                        } else {
-                            balance -= Integer.parseInt(resultSet.getString("amount"));
-                        }
-                    }
+                    int balance = c.getBalance(pin);
                     if (balance < Integer.parseInt(amount)) {
                         JOptionPane.showMessageDialog(null, "Insuffient Balance");
                         return;
                     }
 
-                    c.statement.executeUpdate("insert into bank values('" + pin + "', '" + date + "', 'Withdrawl', '" + amount + "' )");
+                    c.addTransaction(pin, date, "Withdrawl", amount);
                     JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
                     setVisible(false);
                     new main_Class(pin);

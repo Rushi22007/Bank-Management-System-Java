@@ -99,17 +99,13 @@ public class Pin extends JFrame implements ActionListener {
                 }
 
                 Connn c = new Connn();
-                String q1 = "update bank set pin = '"+pin1+"' where pin = '"+pin+"'";
-                String q2 = "update login set pin = '"+pin1+"' where pin = '"+pin+"'";
-                String q3 = "update signupthree set pin = '"+pin1+"' where pin = '"+pin+"'";
-
-                c.statement.executeUpdate(q1);
-                c.statement.executeUpdate(q2);
-                c.statement.executeUpdate(q3);
-
-                JOptionPane.showMessageDialog(null,"PIN changed successfully");
-                setVisible(false);
-                new main_Class(pin);
+                if (c.updatePin(pin, pin1)) {
+                    JOptionPane.showMessageDialog(null,"PIN changed successfully");
+                    setVisible(false);
+                    new main_Class(pin1);
+                } else {
+                    JOptionPane.showMessageDialog(null,"Unable to change PIN");
+                }
 
             } else if (e.getSource()==b2) {
                 new main_Class(pin);

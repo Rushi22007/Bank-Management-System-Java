@@ -183,6 +183,7 @@ public class Signup3 extends JFrame implements ActionListener {
         setSize(850,800);
         setLayout(null);
         setLocation(400,20);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
@@ -206,31 +207,34 @@ public class Signup3 extends JFrame implements ActionListener {
         long first3 = (ran.nextLong() % 9000L)+ 1000L;
         String pin = "" + Math.abs(first3);
 
-        String fac = "";
+        StringBuilder facBuilder = new StringBuilder();
         if(c1.isSelected()){
-            fac = fac+"ATM CARD ";
-        } else if (c2.isSelected()) {
-            fac = fac+"Internet Banking";
-        } else if (c3.isSelected()) {
-            fac = fac+"Mobile Banking";
-        } else if (c4.isSelected()) {
-            fac = fac+"EMAIL Alerts";
-        } else if (c5.isSelected()) {
-            fac=fac+"Cheque Book";
-        } else if (c6.isSelected()) {
-            fac=fac+"E-Statement";
+            facBuilder.append("ATM CARD ");
         }
+        if (c2.isSelected()) {
+            facBuilder.append("Internet Banking ");
+        }
+        if (c3.isSelected()) {
+            facBuilder.append("Mobile Banking ");
+        }
+        if (c4.isSelected()) {
+            facBuilder.append("EMAIL Alerts ");
+        }
+        if (c5.isSelected()) {
+            facBuilder.append("Cheque Book ");
+        }
+        if (c6.isSelected()) {
+            facBuilder.append("E-Statement ");
+        }
+        String fac = facBuilder.toString().trim();
 
         try {
             if (e.getSource()==s){
-                if (atype.equals("")){
-                    JOptionPane.showMessageDialog(null,"Fill all the fields");
+                if (atype == null || fac.isEmpty()){
+                    JOptionPane.showMessageDialog(null,"Please select account type and at least one service");
                 }else {
                     Connn c1 = new Connn();
-                    String q1 = "insert into signupthree values('"+formno+"', '"+atype+"','"+cardno+"','"+pin+"','"+fac+"')";
-                    String q2 = "insert into login values('"+formno+"','"+cardno+"','"+pin+"')";
-                    c1.statement.executeUpdate(q1);
-                    c1.statement.executeUpdate(q2);
+                    c1.createAccount(formno, atype, fac, cardno, pin);
                     JOptionPane.showMessageDialog(null,"Card Number : "+cardno+"\n Pin : "+pin );
                     new Deposit(pin);
                     setVisible(false);

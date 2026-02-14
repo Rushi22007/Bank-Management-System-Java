@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 
 public class BalanceEnquriy extends JFrame implements ActionListener {
 
@@ -43,14 +42,7 @@ public class BalanceEnquriy extends JFrame implements ActionListener {
         int balance =0;
         try{
             Connn c = new Connn();
-            ResultSet resultSet = c.statement.executeQuery("Select * from bank where pin = '"+pin+"'");
-            while (resultSet.next()){
-                if (resultSet.getString("type").equals("Deposit")){
-                    balance += Integer.parseInt(resultSet.getString("amount"));
-                }else {
-                    balance -= Integer.parseInt(resultSet.getString("amount"));
-                }
-            }
+            balance = c.getBalance(pin);
         }catch (Exception e){
             e.printStackTrace();
         }

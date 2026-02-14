@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 import java.util.Date;
 
 public class FastCash extends JFrame implements ActionListener {
@@ -93,22 +92,14 @@ public class FastCash extends JFrame implements ActionListener {
             Connn c = new Connn();
             Date date = new Date();
             try{
-                ResultSet resultSet = c.statement.executeQuery("select * from bank where pin = '"+pin+"'");
-                int balance =0;
-                while (resultSet.next()){
-                    if (resultSet.getString("type").equals("Deposit")){
-                        balance += Integer.parseInt(resultSet.getString("amount"));
-                    }else {
-                        balance -= Integer.parseInt(resultSet.getString("amount"));
-                    }
-                }
+                int balance = c.getBalance(pin);
 
                 if (e.getSource() != b7 && balance < Integer.parseInt(amount)){
                     JOptionPane.showMessageDialog(null, "Insuffient Balance");
                     return;
                 }
 
-                c.statement.executeUpdate("insert into bank values('"+pin+"','"+date+"', 'withdrawl', '"+amount+"')");
+                c.addTransaction(pin, date, "Withdrawl", amount);
                 JOptionPane.showMessageDialog(null, "Rs. "+amount+" Debited Successfully");
             }catch (Exception E){
                 E.printStackTrace();

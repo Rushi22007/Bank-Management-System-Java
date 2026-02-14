@@ -130,6 +130,9 @@ public class Signup2 extends JFrame implements ActionListener {
         r2.setBackground(new Color(252,208,76));
         r2.setBounds(460,490,100,30);
         add(r2);
+        ButtonGroup seniorGroup = new ButtonGroup();
+        seniorGroup.add(r1);
+        seniorGroup.add(r2);
 
         JLabel l11 = new JLabel("Existing Account : ");
         l11.setFont(new Font("Raleway", Font.BOLD,18));
@@ -146,6 +149,9 @@ public class Signup2 extends JFrame implements ActionListener {
         e2.setBackground(new Color(252,208,76));
         e2.setBounds(460,540,100,30);
         add(e2);
+        ButtonGroup existingGroup = new ButtonGroup();
+        existingGroup.add(e1);
+        existingGroup.add(e2);
 
         JLabel l12 = new JLabel("Form No : ");
         l12.setFont(new Font("Raleway", Font.BOLD,14));
@@ -170,6 +176,7 @@ public class Signup2 extends JFrame implements ActionListener {
         setSize(850,750);
         setLocation(450,80);
         getContentPane().setBackground(new Color(252, 208, 76));
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
@@ -191,19 +198,18 @@ public class Signup2 extends JFrame implements ActionListener {
             scitizen ="No";
         }
         String eAccount = " ";
-        if ((r1.isSelected())){
+        if ((e1.isSelected())){
             eAccount = "Yes";
-        } else if (r2.isSelected()) {
+        } else if (e2.isSelected()) {
             eAccount ="No";
         }
 
         try{
-            if (textPan.getText().equals("") || textAadhar.getText().equals("")){
-                JOptionPane.showMessageDialog(null,"Fill all the fields");
+            if (textPan.getText().equals("") || textAadhar.getText().equals("") || scitizen.trim().isEmpty() || eAccount.trim().isEmpty()){
+                JOptionPane.showMessageDialog(null,"Please fill all the fields");
             }else {
                 Connn c = new Connn();
-                String q = "insert into Signuptwo values('"+formno+"', '"+rel+"', '"+cate+"','"+inc+"','"+edu+"','"+occ+"','"+pan+"','"+addhar+"','"+scitizen+"','"+eAccount+"')";
-                c.statement.executeUpdate(q);
+                c.saveSignupTwo(new Connn.SignupTwoRecord(formno, rel, cate, inc, edu, occ, pan, addhar, scitizen, eAccount));
                 new Signup3(formno);
                 setVisible(false);
             }
