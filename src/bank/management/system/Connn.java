@@ -336,6 +336,49 @@ public class Connn {
         return validateLogin(cardNo, pin);
     }
 
+    public void deposit(String pin, int amount) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement ps = conn.prepareStatement(
+                     "INSERT INTO transactions(pin, date_ms, type, amount) VALUES (?, ?, 'Deposit', ?)")) {
+            ps.setString(1, pin);
+            ps.setLong(2, System.currentTimeMillis());
+            ps.setInt(3, amount);
+            ps.executeUpdate();
+        }
+    }
+
+    public void withdraw(String pin, int amount) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement ps = conn.prepareStatement(
+                     "INSERT INTO transactions(pin, date_ms, type, amount) VALUES (?, ?, 'Withdrawl', ?)")) {
+            ps.setString(1, pin);
+            ps.setLong(2, System.currentTimeMillis());
+            ps.setInt(3, amount);
+            ps.executeUpdate();
+        }
+    }
+
+    public String getMiniStatement(String pin) throws SQLException {
+        StringBuilder json = new StringBuilder("[");
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT date_ms, type, amount FROM transactions WHERE pin = ? ORDER BY date_ms DESC LIMIT 10")) {
+            ps.setString(1, pin);
+            try (ResultSet rs = ps.executeQuery()) {
+                boolean first = true;
+                while (rs.next()) {
+                    if (!first) json.append(",");
+                    first = false;
+                    json.append("{\"date\":\"").append(new Date(rs.getLong("date_ms"))).append("\",");
+                    json.append("\"type\":\"").append(rs.getString("type")).append("\",");
+                    json.append("\"amount\":").append(rs.getInt("amount")).append("}");
+                }
+            }
+        }
+        json.append("]");
+        return json.toString();
+    }
+
     public record SignupRecord(String formNo, String name, String fname, String dob, String gender,
                                String email, String marital, String address, String city, String pinCode, String state) {}
 
