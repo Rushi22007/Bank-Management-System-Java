@@ -1,0 +1,94 @@
+╔════════════════════════════════════════════════════════════════════╗
+║           AUTOMATIC EMAIL SCHEDULER - SETUP INSTRUCTIONS          ║
+╚════════════════════════════════════════════════════════════════════╝
+
+✅ Configuration:
+   Sender: officialshreeman@gmail.com
+   Recipient: rushikeshchamale5@gmail.com
+   Interval: Every 1 minute
+
+⚠️  IMPORTANT: Gmail App Password Required
+═══════════════════════════════════════════════════════════════════
+
+Gmail does NOT allow regular passwords for third-party apps. 
+You MUST use an "App Password" instead.
+
+📋 STEP-BY-STEP GUIDE TO GENERATE APP PASSWORD:
+═══════════════════════════════════════════════════════════════════
+
+1. Go to your Google Account:
+   https://myaccount.google.com/
+
+2. Click "Security" on the left sidebar
+
+3. Enable "2-Step Verification" (if not already enabled):
+   • Click "2-Step Verification"
+   • Follow the setup process
+   • Use your phone number for verification
+
+4. Generate an App Password:
+   • Search for "App passwords" in the security page
+   • OR go directly to: https://myaccount.google.com/apppasswords
+   • You'll need to sign in again
+   • Select app: "Mail"
+   • Select device: "Windows Computer" (or Other)
+   • Click "Generate"
+
+5. Copy the 16-character password:
+   Example: abcd efgh ijkl mnop
+   • Copy this password (it has spaces - that's normal)
+   • You won't be able to see it again!
+
+6. Update email.properties:
+   • Open: email.properties
+   • Replace the password line:
+     mail.sender.password=Rushi@2207
+   With your App Password (remove spaces):
+     mail.sender.password=abcdefghijklmnop
+
+7. Restart the scheduler:
+   • Double-click: start-auto-email.bat
+   • OR run: java -cp "lib/*;out/production/Bank Management System" bank.management.system.TransactionEmailScheduler
+
+═══════════════════════════════════════════════════════════════════
+
+📧 WHAT WILL BE EMAILED:
+═══════════════════════════════════════════════════════════════════
+
+Every 1 minute, you'll receive:
+✅ Transaction Summary (total deposits/withdrawals)
+✅ Recent 10 Transactions
+✅ Current Account Balances
+✅ Today's Activity Statistics
+
+═══════════════════════════════════════════════════════════════════
+
+🚀 TO START THE SCHEDULER:
+═══════════════════════════════════════════════════════════════════
+
+Option 1: Double-click the batch file
+   start-auto-email.bat
+
+Option 2: Run command
+   java -cp "lib/*;out/production/Bank Management System" bank.management.system.TransactionEmailScheduler
+
+🛑 TO STOP THE SCHEDULER:
+   Press Ctrl+C in the terminal window
+
+═══════════════════════════════════════════════════════════════════
+
+❓ TROUBLESHOOTING:
+═══════════════════════════════════════════════════════════════════
+
+Error: "Could not convert socket to TLS"
+   → You're using regular password. Use App Password instead.
+
+Error: "Authentication failed"
+   → Check email address and App Password in email.properties
+   → Make sure 2-Step Verification is enabled
+
+Error: "Could not connect"
+   → Check internet connection
+   → Make sure port 587 is not blocked by firewall
+
+═══════════════════════════════════════════════════════════════════
