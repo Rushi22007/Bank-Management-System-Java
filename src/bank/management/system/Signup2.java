@@ -5,8 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("this-escape")
 public class Signup2 extends JFrame implements ActionListener {
-    JComboBox comboBox,comboBox2,comboBox3,comboBox4,comboBox5;
+    JComboBox<String> comboBox,comboBox2,comboBox3,comboBox4,comboBox5;
     JTextField textPan,textAadhar;
     JRadioButton r1,r2, e1,e2;
     JButton next;
@@ -39,7 +40,7 @@ public class Signup2 extends JFrame implements ActionListener {
         add(l3);
 
         String religion[] = {"Hindu","Muslim","Sikh", "Christian", "Other"};
-        comboBox = new JComboBox(religion);
+        comboBox = new JComboBox<>(religion);
         comboBox.setBackground(new Color(252,208,76));
         comboBox.setFont(new Font("Raleway",Font.BOLD,14));
         comboBox.setBounds(350,120,320,30);
@@ -51,7 +52,7 @@ public class Signup2 extends JFrame implements ActionListener {
         add(l4);
 
         String Category [] = {"General","OBC","SC", "ST", "Other"};
-        comboBox2 = new JComboBox(Category);
+        comboBox2 = new JComboBox<>(Category);
         comboBox2.setBackground(new Color(252,208,76));
         comboBox2.setFont(new Font("Raleway",Font.BOLD,14));
         comboBox2.setBounds(350,170,320,30);
@@ -63,7 +64,7 @@ public class Signup2 extends JFrame implements ActionListener {
         add(l5);
 
         String income [] = {"Null","<1,50,000","<2,50,000", "5,00,000", "Uptp 10,00,000","Above 10,00,000"};
-        comboBox3 = new JComboBox(income);
+        comboBox3 = new JComboBox<>(income);
         comboBox3.setBackground(new Color(252,208,76));
         comboBox3.setFont(new Font("Raleway",Font.BOLD,14));
         comboBox3.setBounds(350,220,320,30);
@@ -75,7 +76,7 @@ public class Signup2 extends JFrame implements ActionListener {
         add(l6);
 
         String educational [] = {"Non-Graduate","Graduate","Post-Graduate", "Doctrate", "Others"};
-        comboBox4 = new JComboBox(educational);
+        comboBox4 = new JComboBox<>(educational);
         comboBox4.setBackground(new Color(252,208,76));
         comboBox4.setFont(new Font("Raleway",Font.BOLD,14));
         comboBox4.setBounds(350,270,320,30);
@@ -88,7 +89,7 @@ public class Signup2 extends JFrame implements ActionListener {
         add(l7);
 
         String Occupation [] = {"Salaried","Self-Employed","Business", "Student", "Retired", "Other"};
-        comboBox5 = new JComboBox(Occupation);
+        comboBox5 = new JComboBox<>(Occupation);
         comboBox5.setBackground(new Color(252,208,76));
         comboBox5.setFont(new Font("Raleway",Font.BOLD,14));
         comboBox5.setBounds(350,340,320,30);
@@ -210,19 +211,21 @@ public class Signup2 extends JFrame implements ActionListener {
             }else {
                 Connn c = new Connn();
                 c.saveSignupTwo(new Connn.SignupTwoRecord(formno, rel, cate, inc, edu, occ, pan, addhar, scitizen, eAccount));
-                new Signup3(formno);
+                Signup3 signup3 = new Signup3(formno);
+                signup3.setVisible(true);
                 setVisible(false);
             }
 
 
-        }catch (Exception E){
-            E.printStackTrace();
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
 
 
     }
 
     public static void main(String[] args) {
-        new Signup2("");
+        Signup2 signup2 = new Signup2("");
+        signup2.setVisible(true);
     }
 }

@@ -1,10 +1,11 @@
 package bank.management.system;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
+@SuppressWarnings("this-escape")
 public class Login extends JFrame implements ActionListener {
     JLabel label1, label2, label3;
     JTextField textField2;
@@ -115,10 +116,11 @@ public class Login extends JFrame implements ActionListener {
             if (e.getSource()==button1){
                 Connn c = new Connn();
                 String cardno = textField2.getText();
-                String pin = passwordField3.getText();
+                String pin = new String(passwordField3.getPassword());
                 if (c.validateLogin(cardno, pin)){
                     setVisible(false);
-                    new main_Class(pin);
+                    main_Class mainClass = new main_Class(pin);
+                    mainClass.setVisible(true);
                 }else {
                     JOptionPane.showMessageDialog(null,"Incorrect Card Number or PIN");
                 }
@@ -128,16 +130,18 @@ public class Login extends JFrame implements ActionListener {
                 textField2.setText("");
                 passwordField3.setText("");
             }else if (e.getSource() == button3){
-                new Signup();
+                Signup signup = new Signup();
+                signup.setVisible(true);
                 setVisible(false);
             }
-        }catch (Exception E){
-            E.printStackTrace();
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
 
     }
 
     public static void main(String[] args) {
-        new Login();
+        Login login = new Login();
+        login.setVisible(true);
     }
 }

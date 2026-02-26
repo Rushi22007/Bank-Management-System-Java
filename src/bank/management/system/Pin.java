@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("this-escape")
 public class Pin extends JFrame implements ActionListener {
     JButton b1,b2;
     JPasswordField p1,p2;
@@ -81,19 +82,19 @@ public class Pin extends JFrame implements ActionListener {
 
         try{
 
-            String pin1 = p1.getText();
-            String pin2 = p2.getText();
+            String pin1 = new String(p1.getPassword());
+            String pin2 = new String(p2.getPassword());
 
             if (!pin1.equals(pin2)){
                 JOptionPane.showMessageDialog(null,"Entered PIN does not match");
                 return;
             }
             if (e.getSource()==b1){
-                if (p1.getText().equals("")){
+                if (pin1.isEmpty()){
                     JOptionPane.showMessageDialog(null,"Enter New PIN");
                     return;
                 }
-                if (p2.getText().equals("")){
+                if (pin2.isEmpty()){
                     JOptionPane.showMessageDialog(null,"Re-Enter New PIN");
                     return;
                 }
@@ -102,19 +103,21 @@ public class Pin extends JFrame implements ActionListener {
                 if (c.updatePin(pin, pin1)) {
                     JOptionPane.showMessageDialog(null,"PIN changed successfully");
                     setVisible(false);
-                    new main_Class(pin1);
+                    main_Class mainClass = new main_Class(pin1);
+                    mainClass.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null,"Unable to change PIN");
                 }
 
             } else if (e.getSource()==b2) {
-                new main_Class(pin);
+                main_Class mainClass = new main_Class(pin);
+                mainClass.setVisible(true);
                 setVisible(false);
             }
 
 
-        }catch (Exception E){
-            E.printStackTrace();
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
 
 
@@ -122,6 +125,7 @@ public class Pin extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Pin("");
+        Pin pin = new Pin("");
+        pin.setVisible(true);
     }
 }

@@ -1,5 +1,6 @@
 package bank.management.system;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public class Connn {
         try {
             Files.createDirectories(Path.of("db"));
             Class.forName("org.sqlite.JDBC");
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new IllegalStateException("Unable to load SQLite driver or create db directory", e);
         }
 

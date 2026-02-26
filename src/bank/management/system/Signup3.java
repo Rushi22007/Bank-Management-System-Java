@@ -1,13 +1,12 @@
 package bank.management.system;
 
-import javax.print.attribute.standard.JobHoldUntil;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.server.ExportException;
 import java.util.Random;
 
+@SuppressWarnings("this-escape")
 public class Signup3 extends JFrame implements ActionListener {
 
     JRadioButton r1,r2,r3,r4;
@@ -233,23 +232,25 @@ public class Signup3 extends JFrame implements ActionListener {
                 if (atype == null || fac.isEmpty()){
                     JOptionPane.showMessageDialog(null,"Please select account type and at least one service");
                 }else {
-                    Connn c1 = new Connn();
-                    c1.createAccount(formno, atype, fac, cardno, pin);
+                    Connn conn = new Connn();
+                    conn.createAccount(formno, atype, fac, cardno, pin);
                     JOptionPane.showMessageDialog(null,"Card Number : "+cardno+"\n Pin : "+pin );
-                    new Deposit(pin);
+                    Deposit deposit = new Deposit(pin);
+                    deposit.setVisible(true);
                     setVisible(false);
                 }
             } else if (e.getSource()==c) {
                 System.exit(0);
             }
 
-        }catch (Exception E){
-            E.printStackTrace();
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
 
     }
 
     public static void main(String[] args) {
-        new Signup3("");
+        Signup3 signup3 = new Signup3("");
+        signup3.setVisible(true);
     }
 }

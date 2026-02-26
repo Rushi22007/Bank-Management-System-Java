@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("this-escape")
 public class main_Class extends JFrame implements ActionListener {
     JButton b1,b2,b3,b4,b5,b6,b7;
     String pin;
@@ -83,28 +84,35 @@ public class main_Class extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==b1){
-           new Deposit(pin);
+            Deposit deposit = new Deposit(pin);
+            deposit.setVisible(true);
             setVisible(false);
         }else if (e.getSource()==b7){
             System.exit(0);
         } else if (e.getSource()==b2) {
-            new Withdrawl(pin);
+            Withdrawl withdrawl = new Withdrawl(pin);
+            withdrawl.setVisible(true);
             setVisible(false);
         } else if (e.getSource()==b6) {
-            new BalanceEnquriy(pin);
+            BalanceEnquriy balanceEnquriy = new BalanceEnquriy(pin);
+            balanceEnquriy.setVisible(true);
             setVisible(false);
         } else if (e.getSource()==b3) {
-            new FastCash(pin);
+            FastCash fastCash = new FastCash(pin);
+            fastCash.setVisible(true);
             setVisible(false);
         } else if (e.getSource()==b5) {
-            new Pin(pin);
+            Pin pinChange = new Pin(pin);
+            pinChange.setVisible(true);
             setVisible(false);
         } else if (e.getSource()==b4) {
-            new mini(pin);
+            mini miniStatement = new mini(pin);
+            miniStatement.setVisible(true);
         }
     }
 
     public static void main(String[] args) {
-        new main_Class("");
+        main_Class mainClass = new main_Class("");
+        mainClass.setVisible(true);
     }
 }
