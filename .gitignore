@@ -6,6 +6,9 @@ out/
 # Local DB
 db/*.db
 
+# Generated reports
+reports/*.pdf
+
 # OS junk
 Thumbs.db
 .DS_Store
